@@ -1,0 +1,32 @@
+@page "/dynamic"
+@rendermode InteractiveServer
+<h3>Our Fist Dynamic Content</h3>
+
+<br />
+<br />
+<button @onclick="HandleBlazerSeverClick">Blazor Sever</button>
+<button @onclick="HandleBlazerWebAssemblyClick">Blazor WebAssemply</button>
+<br />
+<br />
+<h3>@title</h3>
+<div>
+	@Content
+</div>
+
+@code {
+	private string title = string.Empty;
+	private string Content = string.Empty;
+
+	private void HandleBlazerSeverClick()
+	{
+		title = "Blazor Sever";
+		Content = "Blazor Sever sẽ khởi tạo những nội dung động (dynamic content)" + 
+		" ở máy chủ (sever) và gửi nội dung tới trình duyệt thông qua giao thức signalR";
+	}
+	private void HandleBlazerWebAssemblyClick()
+	{
+		title = "Blazor WebAssembly";
+		Content = "Blazor WebAssembly chạy hoàn toàn ở trình duyệt và" +
+		" khởi tạo những nội dung động ngay tại trình duyệt";
+	}
+}

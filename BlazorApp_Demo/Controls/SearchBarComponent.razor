@@ -1,0 +1,34 @@
+@using Microsoft.AspNetCore.Components.Web
+
+
+<div class="row g-3">
+		<label for="filter" Search:&nbsp;</label>
+	<div class="col-auto">
+			<input type="text" class="form-control" id="filter" @bind-value="filter" />
+	</div>
+	<div class="col-auto">
+		<button type="button" class="btn btn-primary mb-3" @onclick="HandleSearch">Search</button>
+	</div>
+
+</div>
+
+
+@code {
+	private string filter = string.Empty;
+
+	[Parameter]
+	public EventCallback<string> OnSearch { get; set; }
+
+	private void HandleSearch()
+	{
+		OnSearch.InvokeAsync(filter);
+	}
+
+	private void HandleKeyDown(KeyboardEventArgs e)
+	{
+		if (e.Key == "Enter")
+		{
+			HandleSearch();
+		}
+	}
+}
