@@ -1,3 +1,4 @@
+@implements IDisposable
 @inject IShoppingCartStateStore shoppingCartStateStore
 <div>
     Cart:&nbsp; @lineItemCount
@@ -9,13 +10,13 @@
         if(firstRender){
             shoppingCartStateStore.AddStateChangeListeners(HandleShoppingCartStateChange);
             lineItemCount = await shoppingCartStateStore.GetItemsCount();
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
         }
     }
 
     private async void HandleShoppingCartStateChange(){
         lineItemCount = await shoppingCartStateStore.GetItemsCount();
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
     }
 
     public void Dispose(){

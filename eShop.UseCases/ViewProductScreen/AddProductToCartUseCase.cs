@@ -25,7 +25,7 @@ namespace eShop.UseCases.ViewProductScreen
             this.shoppingCartStateStore = shoppingCartStateStore;
         }
 
-        public async void Execute(int productId)
+        public async Task Execute(int productId)
         {
             var product = productRepository.GetProduct(productId);
             if (product != null)

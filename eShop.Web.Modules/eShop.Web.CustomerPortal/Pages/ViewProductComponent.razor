@@ -38,11 +38,11 @@
 			product = viewProduct.Execute(Id);
 	}
 
-	private void AddToCart()
+	private async Task AddToCart()
 	{
 		if (product != null)
 		{
-			addProductToCartUseCase.Execute(product.ProductId);
+			await addProductToCartUseCase.Execute(product.ProductId);
 			navigationManager.NavigateTo("/");
 		}
 	}
