@@ -1,28 +1,60 @@
 @if (Order != null){
     <tr>
-        <td>
+        <td class="text-nowrap">
             @if (Order.DatePlaced.HasValue){
-                @Order.DatePlaced.Value.ToString("yyyy-MM-dd")
+                <span class="text-secondary small">
+                    <i class="bi bi-calendar3 me-1 text-muted"></i>
+                    @Order.DatePlaced.Value.ToString("dd/MM/yyyy HH:mm")
+                </span>
             }
+        </td>
+        <td>
+            <span class="badge bg-light text-primary border fw-bold px-2 py-1">
+                #@Order.OrderId
+            </span>
+        </td>
+        <td>
+            <div class="fw-bold text-dark">
+                <i class="bi bi-person-fill text-muted me-1"></i>
+                @Order.CustomerName
+            </div>
+        </td>
+        <td>
+            <div class="small text-secondary text-truncate" style="max-width: 250px;">
+                <i class="bi bi-geo-alt me-1 text-muted"></i>
+                @Order.CustomerCity, @Order.CustomerStateProvince, @Order.CustomerCountry
+            </div>
         </td>
         <td>
             @if (!Order.DateProcessed.HasValue){
-                <NavLink href="@($"orderdetail/{Order.OrderId}")">
-                    @Order.OrderId
+                <span class="status-pill pending">
+                    <i class="bi bi-clock-history"></i> Chờ xử lý
+                </span>
+            }
+            else{
+                <span class="status-pill processed">
+                    <i class="bi bi-check-circle-fill"></i> Đã xử lý
+                </span>
+            }
+        </td>
+        <td class="text-end text-nowrap">
+            @if (!Order.DateProcessed.HasValue){
+                <NavLink href="@($"/orderdetail/{Order.OrderId}")" class="btn btn-sm btn-primary rounded-pill px-3 py-1">
+                    <span>Xử lý</span>
+                    <i class="bi bi-chevron-right ms-1"></i>
                 </NavLink>
             }
             else{
-                @Order.OrderId
+                <NavLink href="@($"/orderdetail/{Order.OrderId}")" class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1">
+                    <span>Chi tiết</span>
+                    <i class="bi bi-eye ms-1"></i>
+                </NavLink>
             }
         </td>
-        <td>@Order.CustomerCountry</td>
-        <td>@Order.CustomerStateProvince</td>
-        <td>@Order.CustomerCity</td>
-        <td>@Order.CustomerName</td>
     </tr>
 }
 
 @code {
     [Parameter]
-    public Order Order { get; set; }
+    public Order? Order { get; set; }
 }

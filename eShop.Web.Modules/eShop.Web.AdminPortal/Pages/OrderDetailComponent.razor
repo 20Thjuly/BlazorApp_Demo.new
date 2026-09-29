@@ -5,57 +5,184 @@
 @inject IProcessOrderUseCase processOrderUseCase
 @inject IViewOrderDetailUseCase ViewOrderDetailUseCase
 
-<h3>Order Detail</h3>
-<br />
-@if (order != null){
-    <p>
-        <b>Customer Info:</b>
-    </p>
-    <p>@order.CustomerName</p>
-    <p>@order.CustomerAddress</p>
-    <p>@order.CustomerCity</p>
-    <p>@order.CustomerStateProvince</p>
-    <p>@order.CustomerCountry</p>
-    <br />
+<PageTitle>Chi tiết đơn hàng #@Id - eShop Admin</PageTitle>
 
-    <br />
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in order.LineItems){
-                <tr>
-                    <td>@item.Product.Name</td>
-                    <td>@item.Product.Price</td>
-                    <td>@item.Quantity</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<div class="py-3">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav mb-3">
+        <NavLink href="/outstandingorders"><i class="bi bi-arrow-left me-1"></i>Đơn hàng chờ xử lý</NavLink>
+        <i class="bi bi-chevron-right"></i>
+        <span>Chi tiết đơn hàng #@Id</span>
+    </nav>
 
-    <br />
-    <button type="button" class="btn btn-primary" @onclick="HandleProcessOrder">Mark Order as Processed</button>
-}
+    @if (order != null)
+    {
+        <!-- Header -->
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <div>
+                <h2 class="h3 fw-bold mb-1 d-flex align-items-center gap-2">
+                    <span>Đơn Hàng #@order.OrderId</span>
+                    @if (order.DateProcessed.HasValue)
+                    {
+                        <span class="status-pill processed fs-6">
+                            <i class="bi bi-check-circle-fill"></i> Đã xử lý
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="status-pill pending fs-6">
+                            <i class="bi bi-clock-history"></i> Chờ xử lý
+                        </span>
+                    }
+                </h2>
+                <div class="text-muted small">
+                    <i class="bi bi-calendar3 me-1"></i>
+                    Ngày đặt: @(order.DatePlaced.HasValue ? order.DatePlaced.Value.ToString("dd/MM/yyyy HH:mm") : "N/A")
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <NavLink href="/outstandingorders" class="btn btn-outline-secondary rounded-pill px-3">
+                    <i class="bi bi-arrow-left me-1"></i> Quay lại
+                </NavLink>
+                @if (!order.DateProcessed.HasValue)
+                {
+                    <button type="button" class="btn btn-success rounded-pill px-4 fw-bold d-inline-flex align-items-center gap-2" @onclick="HandleProcessOrder">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Xác Nhận Đã Xử Lý</span>
+                    </button>
+                }
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Customer Info -->
+            <div class="col-lg-4">
+                <div class="card border rounded-4 p-4 bg-white shadow-sm h-100">
+                    <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-person-circle text-primary"></i>
+                        Thông Tin Khách Hàng
+                    </h5>
+                    
+                    <div class="mb-3">
+                        <div class="text-muted small">Họ và tên:</div>
+                        <div class="fw-bold fs-6">@order.CustomerName</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="text-muted small">Địa chỉ nhận hàng:</div>
+                        <div class="fw-semibold">@order.CustomerAddress</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="text-muted small">Thành phố / Tỉnh:</div>
+                        <div class="fw-semibold">@order.CustomerCity, @order.CustomerStateProvince</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="text-muted small">Quốc gia:</div>
+                        <div class="fw-semibold">@order.CustomerCountry</div>
+                    </div>
+
+                    @if (order.DateProcessed.HasValue)
+                    {
+                        <div class="alert alert-success mt-auto py-2 small mb-0">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Đã xử lý lúc @order.DateProcessed.Value.ToString("dd/MM/yyyy HH:mm") bởi <strong>@order.AdminUser</strong>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Items Table -->
+            <div class="col-lg-8">
+                <div class="modern-table-card">
+                    <div class="p-3 bg-light border-bottom fw-bold">
+                        <i class="bi bi-bag-check text-primary me-2"></i>
+                        Danh Sách Sản Phẩm (@order.LineItems?.Count)
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table-modern">
+                            <thead>
+                                <tr>
+                                    <th>Sản Phẩm</th>
+                                    <th class="text-center">Số Lượng</th>
+                                    <th class="text-end">Đơn Giá</th>
+                                    <th class="text-end">Thành Tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (order.LineItems != null)
+                                {
+                                    @foreach (var item in order.LineItems)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <img src="@item.Product?.ImageLink" 
+                                                         alt="@item.Product?.Name" 
+                                                         style="width: 40px; height: 40px; object-fit: contain; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0; padding: 2px;" 
+                                                         onerror="this.onerror=null; this.src='/images/placeholder.svg';" />
+                                                    <div class="fw-semibold text-truncate" style="max-width: 280px;">@item.Product?.Name</div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center fw-bold">@item.Quantity</td>
+                                            <td class="text-end">@item.Product?.Price.ToString("c")</td>
+                                            <td class="text-end fw-bold text-primary">@(((item.Product?.Price ?? 0) * item.Quantity).ToString("c"))</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-light">
+                                    <td colspan="3" class="text-end fw-bold">Tổng Giá Trị Đơn Hàng:</td>
+                                    <td class="text-end fw-bold fs-5 text-primary">
+                                        @{
+                                            double total = 0;
+                                            order.LineItems?.ForEach(x => total += (x.Product?.Price ?? 0) * x.Quantity);
+                                        }
+                                        @total.ToString("c")
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state-box my-4">
+            <div class="empty-state-icon">
+                <i class="bi bi-exclamation-triangle"></i>
+            </div>
+            <h4 class="empty-state-title">Không tìm thấy đơn hàng</h4>
+            <p class="empty-state-desc">Đơn hàng #@Id không tồn tại hoặc đã bị xóa.</p>
+            <NavLink href="/outstandingorders" class="btn btn-primary rounded-pill px-4">
+                Quay Lại Danh Sách
+            </NavLink>
+        </div>
+    }
+</div>
 
 @code {
-    private AuthenticationState authState;
+    private AuthenticationState? authState;
 
     [CascadingParameter]
-    private Task<AuthenticationState> authStateTask { get; set; }
+    private Task<AuthenticationState>? authStateTask { get; set; }
 
     [Parameter]
     public int Id { get; set; }
 
-    private Order order;
+    private Order? order;
 
     protected override async Task OnInitializedAsync()
     {
-        authState = await authStateTask;
+        if (authStateTask != null)
+        {
+            authState = await authStateTask;
+        }
     }
 
     protected override void OnParametersSet()
@@ -69,8 +196,9 @@
 
     private void HandleProcessOrder()
     {
-        if (order != null && authState != null){
-            processOrderUseCase.Execute(order.OrderId.Value, authState.User.Identity.Name);
+        if (order != null && order.OrderId.HasValue && authState != null){
+            var adminName = authState.User.Identity?.Name ?? "admin";
+            processOrderUseCase.Execute(order.OrderId.Value, adminName);
             navigationManager.NavigateTo("/outstandingorders");
         }
     }

@@ -1,12 +1,25 @@
-<div class="row g-3">
-	<div class="col-auto">
-		<label for="filter">Search:&nbsp;</label>
-	</div>
-	<div class="col-auto">
-		<input type="text" class="form-control" id="filter" @bind-value="filter" @onkeydown="HandleKeyDown" />
-	</div>
-	<div class="col-auto">
-		<button type="button" class="btn btn-primary mb-3" @onclick="HandleSearch">Search</button>
+<div class="search-bar-wrapper">
+	<div class="search-input-group">
+		<i class="bi bi-search search-icon-inside"></i>
+		<input type="text" 
+		       class="search-input-field" 
+		       id="filter" 
+		       placeholder="Tìm kiếm sản phẩm (Ví dụ: Bronzer, Blush, Foundation, Eyeshadow...)" 
+		       @bind-value="filter" 
+		       @bind-value:event="oninput"
+		       @onkeydown="HandleKeyDown" />
+
+		@if (!string.IsNullOrEmpty(filter))
+		{
+			<button type="button" class="search-clear-btn" title="Xóa tìm kiếm" @onclick="HandleClear">
+				<i class="bi bi-x-circle-fill"></i>
+			</button>
+		}
+
+		<button type="button" class="search-btn-action" @onclick="HandleSearch">
+			<i class="bi bi-search"></i>
+			<span class="d-none d-sm-inline">Tìm kiếm</span>
+		</button>
 	</div>
 </div>
 
@@ -18,6 +31,12 @@
 
 	private void HandleSearch()
 	{
+		OnSearch.InvokeAsync(filter);
+	}
+
+	private void HandleClear()
+	{
+		filter = string.Empty;
 		OnSearch.InvokeAsync(filter);
 	}
 

@@ -8,18 +8,84 @@
 @inject IViewShoppingCartUseCase viewShoppingCartUseCase
 @inject IPlaceOrderUseCase placeOrderUseCase
 
-<h3>Placing Order</h3>
-<br/>
+<PageTitle>Đặt hàng & Thanh toán - eShop</PageTitle>
 
-@if (order != null)
+<!-- Checkout Stepper -->
+<div class="checkout-stepper my-4">
+    <div class="stepper-step completed">
+        <span class="step-num"><i class="bi bi-check-lg"></i></span>
+        <span>Giỏ Hàng</span>
+    </div>
+    <div class="stepper-divider active"></div>
+    <div class="stepper-step active">
+        <span class="step-num">2</span>
+        <span>Thông Tin Giao Hàng</span>
+    </div>
+    <div class="stepper-divider"></div>
+    <div class="stepper-step">
+        <span class="step-num">3</span>
+        <span>Hoàn Tất Đơn</span>
+    </div>
+</div>
+
+@if (order != null && order.LineItems != null && order.LineItems.Any())
 {
-    <div class="row">
-        <div class="col">
+    <div class="row g-4 pb-5">
+        <!-- Form Column -->
+        <div class="col-lg-7">
             <CustomerFormComponent OnCustomerInfoSubmitted="HandleCustomerInfoSubmitted"></CustomerFormComponent>
         </div>
-        <div class="col">
+
+        <!-- Order Summary & Items Column -->
+        <div class="col-lg-5">
+            <!-- Mini Items List -->
+            <div class="card border rounded-4 p-3 mb-3 bg-white shadow-sm">
+                <div class="fw-bold mb-3 d-flex align-items-center justify-content-between">
+                    <span>
+                        <i class="bi bi-bag-check text-primary me-2"></i>
+                        Đơn hàng của bạn (@order.LineItems.Count sản phẩm)
+                    </span>
+                    <NavLink href="/cart" class="small text-decoration-none">Chỉnh sửa</NavLink>
+                </div>
+
+                <div class="list-group list-group-flush">
+                    @foreach (var item in order.LineItems)
+                    {
+                        <div class="list-group-item px-0 py-2 d-flex align-items-center gap-3 border-light">
+                            <img src="@item.Product?.ImageLink" 
+                                 alt="@item.Product?.Name" 
+                                 style="width: 44px; height: 44px; object-fit: contain; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; padding: 2px;" 
+                                 onerror="this.onerror=null; this.src='/images/placeholder.svg';" />
+                            <div class="flex-grow-1 text-truncate">
+                                <div class="small fw-semibold text-truncate">@item.Product?.Name</div>
+                                <div class="text-muted" style="font-size: 0.75rem;">Số lượng: @item.Quantity × @item.Price.ToString("c")</div>
+                            </div>
+                            <div class="small fw-bold text-dark">
+                                @((item.Price * item.Quantity).ToString("c"))
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Order Summary -->
             <OrderSummaryComponent order="order" HidePlaceOrder="true"></OrderSummaryComponent>
         </div>
+    </div>
+}
+else
+{
+    <div class="empty-state-box my-5">
+        <div class="empty-state-icon">
+            <i class="bi bi-cart-x"></i>
+        </div>
+        <h3 class="empty-state-title">Chưa có sản phẩm nào để đặt hàng</h3>
+        <p class="empty-state-desc">
+            Vui lòng thêm sản phẩm vào giỏ hàng trước khi tiến hành thanh toán.
+        </p>
+        <NavLink href="/" class="btn btn-primary rounded-pill px-4 py-2">
+            <i class="bi bi-arrow-left me-2"></i> Khám Phá Sản Phẩm
+        </NavLink>
     </div>
 }
 
@@ -37,6 +103,8 @@
 
     private async void HandleCustomerInfoSubmitted(CustomerViewModel customer)
     {
+        if (order == null) return;
+
         var mapper = new AutoMapper.MapperConfiguration(cfg => cfg.CreateMap<CustomerViewModel, Order>()).CreateMapper();
         mapper.Map<CustomerViewModel, Order>(customer, order);
 
@@ -44,7 +112,7 @@
 
         if (string.IsNullOrEmpty(orderUniqueId))
         {
-            //TODO: display error
+            // Error handling
         }
         else
         {

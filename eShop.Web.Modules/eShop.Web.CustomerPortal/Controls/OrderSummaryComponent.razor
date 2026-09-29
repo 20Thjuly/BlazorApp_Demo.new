@@ -1,52 +1,79 @@
 @inject NavigationManager navigationManager
 
-<div class="card m-2" style="width: 25rem;">
-    <div class="card-body">
-        <h5 class="card-title">Order Summary</h5>
-        <div class="card-text d-flex justify-content-between">
-            <div>
-                Items (@itemsCount):
-            </div>
-            <div>
-                @itemsTotalPrice.ToString("c")
-            </div>
-        </div>
-        <div class="card-text d-flex justify-content-between">
-            <div>
-                Shipping And Handling:
-            </div>
-            <div>
-                <text>$0.00</text>
-            </div>
-        </div>
-        <div class="card-text d-flex justify-content-between">
-            <div>
-                Estimated Tax:
-            </div>
-            <div>
-                <text>$0.00</text>
-            </div>
-        </div>
-        <hr />
-        <div class="card-text d-flex justify-content-between" style="color: darkred">
-            <div>
-                <b>Order Total:</b>
-            </div>
-            <div>
-                <b>@itemsTotalPrice.ToString("c")</b>
-            </div>
-        </div>
-        @if (!HidePlaceOrder) {
-            <div class="col">
-                <button class="button btn-primary" @onclick="PlaceOrder">Place your order</button>
-            </div>
-        }
+<div class="order-summary-card">
+    <div class="summary-header">
+        <i class="bi bi-receipt-cutoff me-2" style="color: var(--primary);"></i>
+        Tóm Tắt Đơn Hàng
     </div>
+
+    <!-- Items Subtotal -->
+    <div class="summary-row">
+        <span>Tạm tính (@itemsCount sản phẩm):</span>
+        <span class="fw-semibold">@itemsTotalPrice.ToString("c")</span>
+    </div>
+
+    <!-- Shipping -->
+    <div class="summary-row">
+        <span>Phí vận chuyển:</span>
+        <span class="free-shipping-tag">
+            <i class="bi bi-check-circle-fill me-1"></i>Miễn phí
+        </span>
+    </div>
+
+    <!-- Tax -->
+    <div class="summary-row">
+        <span>Thuế ước tính:</span>
+        <span class="text-muted">$0.00</span>
+    </div>
+
+    <!-- Promo code simulation -->
+    @if (!HidePlaceOrder)
+    {
+        <div class="my-3 pt-2 pb-2 border-top border-bottom border-light">
+            <div class="d-flex gap-2">
+                <input type="text" 
+                       class="form-control form-control-sm" 
+                       placeholder="Mã giảm giá (Ví dụ: ESHOPVIP)" 
+                       @bind="couponCode" />
+                <button type="button" class="btn btn-outline-primary btn-sm flex-shrink-0" @onclick="ApplyCoupon">
+                    Áp dụng
+                </button>
+            </div>
+            @if (isCouponApplied)
+            {
+                <div class="text-success small mt-1">
+                    <i class="bi bi-check-circle me-1"></i>Đã áp dụng ưu đãi freeship & quà tặng!
+                </div>
+            }
+        </div>
+    }
+
+    <!-- Total -->
+    <div class="summary-row total-row">
+        <span>Tổng cộng:</span>
+        <span class="total-amount-highlight">@itemsTotalPrice.ToString("c")</span>
+    </div>
+
+    <!-- Checkout CTA Button -->
+    @if (!HidePlaceOrder)
+    {
+        <button type="button" class="btn-checkout-primary" @onclick="PlaceOrder">
+            <i class="bi bi-shield-lock-fill"></i>
+            <span>Tiến Hành Đặt Hàng</span>
+        </button>
+
+        <div class="summary-trust-badge">
+            <i class="bi bi-patch-check-fill text-success"></i>
+            <span>Bảo mật thanh toán 100% qua SSL</span>
+        </div>
+    }
 </div>
 
 @code {
     int itemsCount = 0;
     double itemsTotalPrice = 0;
+    string couponCode = "";
+    bool isCouponApplied = false;
 
     [Parameter]
     public Order? order { get; set; }
@@ -58,14 +85,22 @@
     {
         base.OnParametersSet();
         if(order != null){
-            itemsCount = order.LineItems.Count;
+            itemsCount = order.LineItems?.Count ?? 0;
             itemsTotalPrice = 0;
-            order.LineItems.ForEach(x => itemsTotalPrice += x.Price * x.Quantity);
+            order.LineItems?.ForEach(x => itemsTotalPrice += x.Price * x.Quantity);
         }
     }
 
     private void PlaceOrder()
     {
         navigationManager.NavigateTo("/placeorder");
+    }
+
+    private void ApplyCoupon()
+    {
+        if (!string.IsNullOrWhiteSpace(couponCode))
+        {
+            isCouponApplied = true;
+        }
     }
 }

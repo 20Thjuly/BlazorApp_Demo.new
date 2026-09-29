@@ -2,41 +2,142 @@
 
 @if (customer != null)
 {
-    <EditForm Model="customer" class="form-line" OnValidSubmit="HandleValidSubmit">
-        <DataAnnotationsValidator></DataAnnotationsValidator>
-        <ValidationSummary></ValidationSummary>
+    <div class="checkout-form-card">
+        <EditForm Model="customer" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
 
-        <div class="form-group">
-            <label for="name">Name</label>
-            <InputText id="name" @bind-Value="customer.CustomerName" class="form-control"></InputText>
-        </div>
+            <!-- Shipping Section -->
+            <div class="checkout-section-title">
+                <i class="bi bi-geo-alt-fill" style="color: var(--primary);"></i>
+                1. Thông Tin Giao Hàng
+            </div>
 
-        <div class="form-group">
-            <label for="address">Address</label>
-            <InputText id="address" @bind-Value="customer.CustomerAddress" class="form-control"></InputText>
-        </div>
+            <!-- Name -->
+            <div class="modern-form-group">
+                <label for="name">
+                    <span>Họ và tên người nhận</span>
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="modern-input-wrapper">
+                    <i class="bi bi-person modern-input-icon"></i>
+                    <InputText id="name" 
+                               @bind-Value="customer.CustomerName" 
+                               class="modern-input" 
+                               placeholder="Ví dụ: Nguyễn Thị Mai" />
+                </div>
+                <ValidationMessage For="@(() => customer.CustomerName)" class="validation-message" />
+            </div>
 
-        <div class="form-group">
-            <label for="city">City</label>
-            <InputText id="city" @bind-Value="customer.CustomerCity" class="form-control"></InputText>
-        </div>
+            <!-- Address -->
+            <div class="modern-form-group">
+                <label for="address">
+                    <span>Địa chỉ nhận hàng chi tiết</span>
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="modern-input-wrapper">
+                    <i class="bi bi-house-door modern-input-icon"></i>
+                    <InputText id="address" 
+                               @bind-Value="customer.CustomerAddress" 
+                               class="modern-input" 
+                               placeholder="Số nhà, tên đường, toà nhà, ngõ/ngách..." />
+                </div>
+                <ValidationMessage For="@(() => customer.CustomerAddress)" class="validation-message" />
+            </div>
 
-        <div class="form-group">
-            <label for="province">Province</label>
-            <InputText id="province" @bind-Value="customer.CustomerStateProvince" class="form-control"></InputText>
-        </div>
+            <div class="row g-3">
+                <!-- City -->
+                <div class="col-md-6 modern-form-group">
+                    <label for="city">
+                        <span>Quận / Huyện / Thành phố</span>
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="modern-input-wrapper">
+                        <i class="bi bi-building modern-input-icon"></i>
+                        <InputText id="city" 
+                                   @bind-Value="customer.CustomerCity" 
+                                   class="modern-input" 
+                                   placeholder="Ví dụ: Quận 1 / Cầu Giấy" />
+                    </div>
+                    <ValidationMessage For="@(() => customer.CustomerCity)" class="validation-message" />
+                </div>
 
-        <div class="form-group">
-            <label for="country">Country</label>
-            <InputText id="country" @bind-Value="customer.CustomerCountry" class="form-control"></InputText>
-        </div>
+                <!-- State / Province -->
+                <div class="col-md-6 modern-form-group">
+                    <label for="province">
+                        <span>Tỉnh / Thành phố</span>
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="modern-input-wrapper">
+                        <i class="bi bi-map modern-input-icon"></i>
+                        <InputText id="province" 
+                                   @bind-Value="customer.CustomerStateProvince" 
+                                   class="modern-input" 
+                                   placeholder="Ví dụ: Hà Nội / TP.HCM" />
+                    </div>
+                    <ValidationMessage For="@(() => customer.CustomerStateProvince)" class="validation-message" />
+                </div>
+            </div>
 
-        <button type="submit" class="btn btn-primary">Place Order</button>
-    </EditForm>
+            <!-- Country -->
+            <div class="modern-form-group">
+                <label for="country">
+                    <span>Quốc gia</span>
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="modern-input-wrapper">
+                    <i class="bi bi-globe modern-input-icon"></i>
+                    <InputText id="country" 
+                               @bind-Value="customer.CustomerCountry" 
+                               class="modern-input" 
+                               placeholder="Ví dụ: Việt Nam" />
+                </div>
+                <ValidationMessage For="@(() => customer.CustomerCountry)" class="validation-message" />
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="checkout-section-title mt-4">
+                <i class="bi bi-credit-card-fill" style="color: var(--primary);"></i>
+                2. Phương Thức Thanh Toán
+            </div>
+
+            <div class="payment-methods-grid">
+                <div class="payment-method-card @(paymentMethod == "cod" ? "selected" : "")" 
+                     @onclick="@(() => paymentMethod = "cod")">
+                    <input type="radio" name="paymentMethod" checked="@(paymentMethod == "cod")" class="form-check-input" />
+                    <div>
+                        <div class="fw-bold"><i class="bi bi-cash-stack text-success me-1"></i>Thanh toán khi nhận hàng (COD)</div>
+                        <div class="small text-muted">Nhận hàng, kiểm tra rồi mới thanh toán tiền mặt</div>
+                    </div>
+                </div>
+
+                <div class="payment-method-card @(paymentMethod == "bank" ? "selected" : "")" 
+                     @onclick="@(() => paymentMethod = "bank")">
+                    <input type="radio" name="paymentMethod" checked="@(paymentMethod == "bank")" class="form-check-input" />
+                    <div>
+                        <div class="fw-bold"><i class="bi bi-qr-code text-primary me-1"></i>Chuyển khoản / Quét mã QR</div>
+                        <div class="small text-muted">Hỗ trợ tất cả ngân hàng & ví điện tử nhanh chóng</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="d-flex align-items-center justify-content-between mt-4 pt-3 border-top">
+                <NavLink href="/cart" class="btn btn-outline-secondary rounded-pill px-3 py-2">
+                    <i class="bi bi-arrow-left me-1"></i> Quay lại giỏ hàng
+                </NavLink>
+
+                <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-bold d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-check2-circle"></i>
+                    <span>Xác Nhận Đặt Hàng</span>
+                </button>
+            </div>
+        </EditForm>
+    </div>
 }
 
 @code {
     private CustomerViewModel? customer;
+    private string paymentMethod = "cod";
 
     [Parameter]
     public EventCallback<CustomerViewModel> OnCustomerInfoSubmitted { get; set; }
@@ -44,7 +145,10 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        customer = new CustomerViewModel();
+        customer = new CustomerViewModel
+        {
+            CustomerCountry = "Việt Nam"
+        };
     }
 
     private async Task HandleValidSubmit()

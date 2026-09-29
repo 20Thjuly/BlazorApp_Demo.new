@@ -4,29 +4,147 @@
 @inject IAddProductToCartUseCase addProductToCartUseCase
 @inject NavigationManager navigationManager
 
-<h3>Product Details</h3>
+<PageTitle>@(product != null ? product.Name + " - eShop" : "Chi tiết sản phẩm - eShop")</PageTitle>
 
-@if (product != null)
-{
-	<div class="card" style="width: 18rem;">
-		<div class="card-body">
-			<img src="@product.ImageLink" />
-			<h5 class="card-title">@product.Name</h5>
-			<h6 class="card-subtitle mb-2 text-muted">@product.Brand</h6>
-			<hr />
-			<p>
-				Price: <label style="color:darkred">@product.Price.ToString("c")</label>
-			</p>
-			<p class="card-text">@product.Description</p>
+<div class="product-detail-layout">
+	<!-- Breadcrumb Navigation -->
+	<nav class="breadcrumb-nav" aria-label="breadcrumb">
+		<NavLink href="/"><i class="bi bi-house-door-fill me-1"></i>Trang chủ</NavLink>
+		<i class="bi bi-chevron-right"></i>
+		<NavLink href="/">Sản phẩm</NavLink>
+		@if (product != null)
+		{
+			<i class="bi bi-chevron-right"></i>
+			<span class="text-truncate" style="max-width: 320px;">@product.Name</span>
+		}
+	</nav>
+
+	@if (product != null)
+	{
+		<div class="row g-4">
+			<!-- Product Image Column -->
+			<div class="col-lg-5">
+				<div class="detail-img-card">
+					<div class="card-top-badges">
+						<span class="badge-brand">@product.Brand</span>
+						<span class="badge-discount">-20% Ưu Đãi</span>
+					</div>
+					<img src="@product.ImageLink" 
+					     alt="@product.Name" 
+					     onerror="this.onerror=null; this.src='/images/placeholder.svg';" />
+				</div>
+			</div>
+
+			<!-- Product Info Column -->
+			<div class="col-lg-7">
+				<div class="detail-info-card">
+					<div class="d-flex align-items-center justify-content-between mb-2">
+						<span class="detail-brand-badge">
+							<i class="bi bi-award-fill"></i>
+							@product.Brand
+						</span>
+						<span class="in-stock-tag">
+							<i class="bi bi-check-circle-fill"></i>
+							Còn hàng trong kho
+						</span>
+					</div>
+
+					<h1 class="detail-title">@product.Name</h1>
+
+					<div class="detail-meta-row">
+						<div class="detail-rating">
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-half"></i>
+							<span class="ms-1">4.8</span>
+							<span class="text-muted small ms-1">(128 đánh giá)</span>
+						</div>
+						<div class="text-muted small">
+							<i class="bi bi-shield-check text-success me-1"></i>Chính hãng 100%
+						</div>
+					</div>
+
+					<div class="detail-price-box">
+						<span class="detail-price-main">@product.Price.ToString("c")</span>
+						<span class="detail-price-old">@((product.Price * 1.25).ToString("c"))</span>
+						<span class="badge bg-danger rounded-pill px-2 py-1 ms-2">Tiết kiệm 20%</span>
+					</div>
+
+					<div class="mb-3">
+						<div class="detail-desc-title">Mô tả sản phẩm</div>
+						<p class="detail-desc-text">@product.Description</p>
+					</div>
+
+					<!-- Trust Perks -->
+					<div class="trust-perks-grid">
+						<div class="perk-box">
+							<i class="bi bi-truck"></i>
+							<span>Giao hàng miễn phí</span>
+						</div>
+						<div class="perk-box">
+							<i class="bi bi-arrow-counterclockwise"></i>
+							<span>Đổi trả 30 ngày</span>
+						</div>
+						<div class="perk-box">
+							<i class="bi bi-patch-check"></i>
+							<span>Bảo đảm chính hãng</span>
+						</div>
+					</div>
+
+					<!-- Call To Action -->
+					<div class="detail-cta-row">
+						<button type="button" 
+						        class="btn-detail-add" 
+						        @onclick="AddToCart" 
+						        disabled="@isAdding">
+							@if (isAdding)
+							{
+								<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+								<span>Đang thêm vào giỏ...</span>
+							}
+							else if (isAdded)
+							{
+								<i class="bi bi-check-circle-fill"></i>
+								<span>Đã thêm vào giỏ hàng!</span>
+							}
+							else
+							{
+								<i class="bi bi-bag-plus-fill"></i>
+								<span>Thêm Vào Giỏ Hàng</span>
+							}
+						</button>
+						<NavLink href="/" class="btn-detail-back">
+							<i class="bi bi-arrow-left"></i>
+							<span>Xem sản phẩm khác</span>
+						</NavLink>
+					</div>
+				</div>
+			</div>
 		</div>
-		<button class="btn btn-primary" @onclick="AddToCart">Add to Cart</button>
-	</div>
-}
-<br />
-<NavLink href="products">Back to product page</NavLink>
+	}
+	else
+	{
+		<div class="empty-state-box">
+			<div class="empty-state-icon">
+				<i class="bi bi-exclamation-diamond"></i>
+			</div>
+			<h3 class="empty-state-title">Không tìm thấy thông tin sản phẩm</h3>
+			<p class="empty-state-desc">
+				Sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã ngừng kinh doanh.
+			</p>
+			<NavLink href="/" class="btn btn-primary rounded-pill px-4 py-2">
+				<i class="bi bi-arrow-left me-1"></i> Quay lại danh sách sản phẩm
+			</NavLink>
+		</div>
+	}
+</div>
 
 @code {
 	private Product? product;
+	private bool isAdding = false;
+	private bool isAdded = false;
 
 	[Parameter]
 	public int Id { get; set; }
@@ -40,10 +158,23 @@
 
 	private async Task AddToCart()
 	{
-		if (product != null)
+		if (product != null && !isAdding)
 		{
-			await addProductToCartUseCase.Execute(product.ProductId);
-			navigationManager.NavigateTo("/");
+			isAdding = true;
+			try
+			{
+				await addProductToCartUseCase.Execute(product.ProductId);
+				isAdded = true;
+				StateHasChanged();
+
+				// Smooth feedback then navigate to cart
+				await Task.Delay(800);
+				navigationManager.NavigateTo("/cart");
+			}
+			finally
+			{
+				isAdding = false;
+			}
 		}
 	}
 }

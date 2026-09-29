@@ -3,39 +3,108 @@
 
 @inject ISearchProductUseCase searchProduct
 
-<h3>Search Product Component</h3>
-<br/>
+<PageTitle>eShop - Mỹ Phẩm & Sắc Đẹp Chính Hãng</PageTitle>
 
+<!-- Hero Banner Section -->
+<section class="eshop-hero">
+    <div class="hero-content">
+        <div class="hero-badge">
+            <i class="bi bi-stars"></i>
+            Bộ Sưu Tập Trang Điểm Cao Cấp 2026
+        </div>
+        <h1 class="hero-title">
+            Tôn Vinh Vẻ Đẹp & <br />
+            <span class="hero-highlight">Sự Tự Tin Của Bạn</span>
+        </h1>
+        <p class="hero-subtitle">
+            Khám phá hàng loạt sản phẩm kem nền, phấn má, phấn mắt chính hãng Maybelline với chất lượng vượt trội và giá tốt nhất hôm nay.
+        </p>
+        
+        <div class="quick-tags">
+            <span class="text-white-50 small align-self-center me-1">Gợi ý nhanh:</span>
+            <button type="button" class="quick-tag-btn @(activeFilter == "" ? "active" : "")" @onclick="@(() => HandleCategoryFilter(""))">Tất cả</button>
+            <button type="button" class="quick-tag-btn @(activeFilter == "Bronzer" ? "active" : "")" @onclick="@(() => HandleCategoryFilter("Bronzer"))">Bronzer</button>
+            <button type="button" class="quick-tag-btn @(activeFilter == "Blush" ? "active" : "")" @onclick="@(() => HandleCategoryFilter("Blush"))">Phấn má (Blush)</button>
+            <button type="button" class="quick-tag-btn @(activeFilter == "Foundation" ? "active" : "")" @onclick="@(() => HandleCategoryFilter("Foundation"))">Kem nền (Foundation)</button>
+            <button type="button" class="quick-tag-btn @(activeFilter == "Shadow" ? "active" : "")" @onclick="@(() => HandleCategoryFilter("Shadow"))">Phấn mắt (Eyeshadow)</button>
+        </div>
+    </div>
+</section>
+
+<!-- Search Bar Component -->
 <SearchBarComponent OnSearch="HandleSearch"></SearchBarComponent>
-<br/>
-<br/>
 
-@if (products != null && products.Count() > 0)
+<!-- Catalog Header & Products Grid -->
+<div class="catalog-header">
+    <div class="d-flex align-items-center gap-3">
+        <h2 class="catalog-title">
+            <i class="bi bi-bag-heart text-primary"></i>
+            Sản Phẩm Nổi Bật
+        </h2>
+        @if (!string.IsNullOrEmpty(activeFilter))
+        {
+            <span class="badge bg-light text-primary border rounded-pill px-3 py-2 d-inline-flex align-items-center gap-2">
+                Bộ lọc: <strong>@activeFilter</strong>
+                <button type="button" class="btn-close btn-close-sm" style="font-size: 0.65rem;" @onclick="@(() => HandleCategoryFilter(""))" title="Xóa bộ lọc"></button>
+            </span>
+        }
+    </div>
+
+    @if (products != null)
+    {
+        <span class="catalog-count-badge">
+            @products.Count() sản phẩm
+        </span>
+    }
+</div>
+
+@if (products != null && products.Any())
 {
-    <div class="row">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 pb-5">
         @foreach (var product in products)
         {
-            <ProductCardComponent product="product"></ProductCardComponent>
+            <div class="col" @key="product.ProductId">
+                <ProductCardComponent product="product"></ProductCardComponent>
+            </div>
         }
     </div>
 }
 else
 {
-    <text>No Products Found.</text>
+    <div class="empty-state-box">
+        <div class="empty-state-icon">
+            <i class="bi bi-search"></i>
+        </div>
+        <h3 class="empty-state-title">Không tìm thấy sản phẩm phù hợp</h3>
+        <p class="empty-state-desc">
+            Không có sản phẩm nào khớp với từ khóa "@activeFilter". Bạn có thể thử tìm kiếm với từ khóa khác như "Blush", "Foundation", "Bronzer"...
+        </p>
+        <button type="button" class="btn btn-primary rounded-pill px-4 py-2" @onclick="@(() => HandleCategoryFilter(""))">
+            <i class="bi bi-arrow-repeat me-1"></i>
+            Xem tất cả sản phẩm
+        </button>
+    </div>
 }
 
 @code {
     private IEnumerable<Product>? products;
+    private string activeFilter = string.Empty;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
         products = searchProduct.Execute();
     }
 
     private void HandleSearch(string filter)
     {
+        activeFilter = filter;
         products = searchProduct.Execute(filter);
+    }
+
+    private void HandleCategoryFilter(string category)
+    {
+        activeFilter = category;
+        products = searchProduct.Execute(category);
     }
 }

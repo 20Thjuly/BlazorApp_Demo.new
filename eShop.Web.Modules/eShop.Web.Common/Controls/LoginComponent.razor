@@ -1,35 +1,84 @@
 @inject NavigationManager navigationManager
 
-<h3>Login</h3>
-<br />
-
-@if (loginViewModel != null)
-{
-    <EditForm Model="loginViewModel" OnValidSubmit="HandleValidSubmit" class="form-line">
-        <DataAnnotationsValidator></DataAnnotationsValidator>
-        <ValidationSummary></ValidationSummary>
-
-        <div class="form-group">
-            <label for="name">User Name</label>
-            <InputText id="name" @bind-Value="loginViewModel.UserName" class="form-control"></InputText>
+<div class="auth-page-wrapper">
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <div class="auth-icon-badge">
+                <i class="bi bi-shield-lock-fill"></i>
+            </div>
+            <h2 class="h4 fw-bold mb-1">Cổng Quản Trị Viên</h2>
+            <p class="text-muted small">Đăng nhập để xem và xử lý các đơn hàng</p>
         </div>
 
-        <div class="form-group">
-            <label for="password">Password</label>
-            <InputText id="password" type="password" @bind-Value="loginViewModel.Password" class="form-control"></InputText>
+        <!-- Demo credentials hint for seamless UX -->
+        <div class="alert alert-primary py-2 px-3 small d-flex align-items-center justify-content-between mb-4 rounded-3 border-0">
+            <div>
+                <i class="bi bi-key-fill text-primary me-2"></i>
+                <span>Tài khoản demo: <strong>admin</strong> / <strong>adminadmin</strong></span>
+            </div>
+            <button type="button" class="btn btn-sm btn-link text-decoration-none p-0" @onclick="FillDemoCredentials">
+                Điền nhanh
+            </button>
         </div>
-        <br />
-        <button type="submit" class="btn btn-primary">Login</button>
-    </EditForm>
-}
+
+        @if (loginViewModel != null)
+        {
+            <EditForm Model="loginViewModel" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator></DataAnnotationsValidator>
+
+                <div class="modern-form-group">
+                    <label for="name">Tên đăng nhập</label>
+                    <div class="modern-input-wrapper">
+                        <i class="bi bi-person modern-input-icon"></i>
+                        <InputText id="name" 
+                                   @bind-Value="loginViewModel.UserName" 
+                                   class="modern-input" 
+                                   placeholder="Nhập tài khoản (admin)" />
+                    </div>
+                    <ValidationMessage For="@(() => loginViewModel.UserName)" class="validation-message" />
+                </div>
+
+                <div class="modern-form-group">
+                    <label for="password">Mật khẩu</label>
+                    <div class="modern-input-wrapper">
+                        <i class="bi bi-lock modern-input-icon"></i>
+                        <InputText id="password" 
+                                   type="password" 
+                                   @bind-Value="loginViewModel.Password" 
+                                   class="modern-input" 
+                                   placeholder="Nhập mật khẩu (adminadmin)" />
+                    </div>
+                    <ValidationMessage For="@(() => loginViewModel.Password)" class="validation-message" />
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2 mt-3 rounded-pill fw-bold d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    <span>Đăng Nhập Hệ Thống</span>
+                </button>
+            </EditForm>
+        }
+
+        <div class="text-center mt-4 pt-3 border-top">
+            <NavLink href="/" class="text-muted small text-decoration-none">
+                <i class="bi bi-arrow-left me-1"></i> Quay về trang mua sắm
+            </NavLink>
+        </div>
+    </div>
+</div>
 
 @code {
-    private LoginViewModel loginViewModel;
+    private LoginViewModel loginViewModel = new LoginViewModel();
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         loginViewModel = new LoginViewModel();
+    }
+
+    private void FillDemoCredentials()
+    {
+        loginViewModel.UserName = "admin";
+        loginViewModel.Password = "adminadmin";
     }
 
     private void HandleValidSubmit()

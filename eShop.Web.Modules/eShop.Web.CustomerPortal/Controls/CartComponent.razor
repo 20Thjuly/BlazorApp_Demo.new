@@ -1,11 +1,24 @@
 @implements IDisposable
 @inject IShoppingCartStateStore shoppingCartStateStore
-<div>
-    Cart:&nbsp; @lineItemCount
+
+<div class="cart-btn-link">
+    <div class="cart-icon-wrapper">
+        <i class="bi bi-bag-heart-fill" style="color: var(--primary);"></i>
+        @if (lineItemCount > 0)
+        {
+            <span class="cart-counter-badge">@lineItemCount</span>
+        }
+    </div>
+    <span class="d-none d-sm-inline">Giỏ hàng</span>
+    @if (lineItemCount > 0)
+    {
+        <span class="badge bg-primary rounded-pill px-2 d-none d-md-inline" style="font-size: 0.75rem;">@lineItemCount</span>
+    }
 </div>
 
 @code {
     private int lineItemCount = 0;
+
     protected override async Task OnAfterRenderAsync(bool firstRender) {
         if(firstRender){
             shoppingCartStateStore.AddStateChangeListeners(HandleShoppingCartStateChange);

@@ -1,10 +1,73 @@
+@inject IAddProductToCartUseCase addProductToCartUseCase
+
 @if (product != null)
 {
-    <div class="card m-2 p-2" style="width: 12rem;">
-        <img src="@product.ImageLink" class="card-img-top" alt=""/>
-        <div class="card-body">
-            <h5 class="card-title"><NavLink href="@($"product/{product.ProductId}")">@product.Name</NavLink></h5>
-            <p class="card-text" style="color: darkred">@product.Price.ToString("c")</p>
+    <div class="product-card-wrap">
+        <div class="eshop-product-card">
+            <!-- Badges -->
+            <div class="card-top-badges">
+                <span class="badge-brand">@product.Brand</span>
+                <span class="badge-discount">-20%</span>
+            </div>
+
+            <!-- Image -->
+            <NavLink href="@($"/product/{product.ProductId}")" class="product-img-box text-decoration-none">
+                <img src="@product.ImageLink" 
+                     alt="@product.Name" 
+                     loading="lazy" 
+                     onerror="this.onerror=null; this.src='/images/placeholder.svg';" />
+            </NavLink>
+
+            <!-- Card Body -->
+            <div class="product-card-body">
+                <!-- Rating -->
+                <div class="product-rating">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-half"></i>
+                    <span class="product-rating-text">(4.8)</span>
+                </div>
+
+                <!-- Title -->
+                <NavLink href="@($"/product/{product.ProductId}")" class="product-title-link" title="@product.Name">
+                    @product.Name
+                </NavLink>
+
+                <!-- Price -->
+                <div class="product-price-section">
+                    <span class="product-current-price">@product.Price.ToString("c")</span>
+                    <span class="product-original-price">@((product.Price * 1.25).ToString("c"))</span>
+                </div>
+
+                <!-- Actions -->
+                <div class="card-actions-row">
+                    <button type="button" 
+                            class="btn-add-cart-card @(isAdded ? "added" : "")" 
+                            @onclick="HandleQuickAdd" 
+                            disabled="@isAdding">
+                        @if (isAdding)
+                        {
+                            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                            <span>Đang thêm...</span>
+                        }
+                        else if (isAdded)
+                        {
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>Đã thêm!</span>
+                        }
+                        else
+                        {
+                            <i class="bi bi-bag-plus-fill"></i>
+                            <span>Thêm vào giỏ</span>
+                        }
+                    </button>
+                    <NavLink href="@($"/product/{product.ProductId}")" class="btn-view-card" title="Xem chi tiết">
+                        <i class="bi bi-eye"></i>
+                    </NavLink>
+                </div>
+            </div>
         </div>
     </div>
 }
@@ -12,4 +75,29 @@
 @code {
     [Parameter]
     public Product? product { get; set; }
+
+    private bool isAdding = false;
+    private bool isAdded = false;
+
+    private async Task HandleQuickAdd()
+    {
+        if (product == null || isAdding) return;
+
+        isAdding = true;
+        try
+        {
+            await addProductToCartUseCase.Execute(product.ProductId);
+            isAdded = true;
+            StateHasChanged();
+
+            // Revert feedback after 1.8 seconds
+            await Task.Delay(1800);
+            isAdded = false;
+        }
+        finally
+        {
+            isAdding = false;
+            StateHasChanged();
+        }
+    }
 }

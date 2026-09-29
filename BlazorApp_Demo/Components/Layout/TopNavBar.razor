@@ -1,36 +1,62 @@
-<div class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <ul class="navbar-nav w-100">
-        <li class="nav-item">
-            <a class="navbar-brand" href="">eShop</a>
-        </li>
-        <AuthorizeView>
-            <Authorized>
-                <li class="nav-item">
-                    <a class="nav-link" href="outstandingorders">Outstanding Orders</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="processedorders">Processed Orders</a>
-                </li>
-            </Authorized>
-        </AuthorizeView>
+<header class="eshop-header">
+    <div class="eshop-container">
+        <div class="eshop-header-inner">
+            <!-- Brand Logo -->
+            <a class="brand-link" href="/">
+                <div class="brand-icon-box">
+                    <i class="bi bi-gem"></i>
+                </div>
+                <div class="brand-text-wrap">
+                    <span class="brand-title">eShop</span>
+                    <span class="brand-sub">Beauty & Cosmetics</span>
+                </div>
+            </a>
 
-        <li class="nav-item ml-auto">
-            <AuthorizeView>
-                <Authorized>
-                    <NavLink class="nav-link" href="/logout">
-                        Sign Out
-                    </NavLink>
-                </Authorized>
-                <NotAuthorized>
-                    <NavLink class="nav-link" href="cart">
-                        <eShop.Web.CustomerPortal.Controls.CartComponent></eShop.Web.CustomerPortal.Controls.CartComponent>
-                    </NavLink>
-                </NotAuthorized>
-            </AuthorizeView>
-        </li>
-    </ul>
-</div>
+            <!-- Navigation Links -->
+            <nav class="d-none d-md-flex align-items-center gap-2">
+                <NavLink class="header-nav-link" href="/" Match="NavLinkMatch.All">
+                    <i class="bi bi-grid-fill"></i>
+                    <span>Tất cả sản phẩm</span>
+                </NavLink>
 
-@code {
+                <AuthorizeView>
+                    <Authorized>
+                        <NavLink class="header-nav-link" href="/outstandingorders">
+                            <i class="bi bi-inbox-fill text-warning"></i>
+                            <span>Đơn chờ xử lý</span>
+                        </NavLink>
+                        <NavLink class="header-nav-link" href="/processedorders">
+                            <i class="bi bi-check-circle-fill text-success"></i>
+                            <span>Đơn đã xử lý</span>
+                        </NavLink>
+                    </Authorized>
+                </AuthorizeView>
+            </nav>
 
-}
+            <!-- Right Actions -->
+            <div class="header-actions">
+                <AuthorizeView>
+                    <Authorized>
+                        <div class="user-status-pill d-none d-sm-inline-flex">
+                            <i class="bi bi-person-fill-gear"></i>
+                            <span>Admin: @context.User.Identity?.Name</span>
+                        </div>
+                        <NavLink class="btn btn-outline-danger btn-sm rounded-pill px-3 d-inline-flex align-items-center gap-1" href="/logout">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Đăng xuất</span>
+                        </NavLink>
+                    </Authorized>
+                    <NotAuthorized>
+                        <NavLink href="/cart" class="text-decoration-none">
+                            <eShop.Web.CustomerPortal.Controls.CartComponent></eShop.Web.CustomerPortal.Controls.CartComponent>
+                        </NavLink>
+                        <NavLink class="btn btn-outline-secondary btn-sm rounded-pill px-3 d-none d-sm-inline-flex align-items-center gap-1" href="/admin">
+                            <i class="bi bi-shield-lock"></i>
+                            <span>Admin Portal</span>
+                        </NavLink>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </div>
+        </div>
+    </div>
+</header>

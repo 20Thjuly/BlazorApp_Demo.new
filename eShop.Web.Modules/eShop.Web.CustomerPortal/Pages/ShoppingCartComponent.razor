@@ -3,28 +3,72 @@
 
 @inject IViewShoppingCartUseCase viewShoppingCartUseCase
 
-<h3>Shopping Cart</h3>
-<br />
-@if(order != null && order.LineItems != null && order.LineItems.Count > 0){
-    <div class="row">
-        <div class="col-6">
-            <ul>
-                @for (int i = 0; i < order.LineItems.Count; i++) {
-                    <LineItemComponent LineItem="order.LineItems[i]" 
+<PageTitle>Giỏ hàng - eShop</PageTitle>
+
+<!-- Checkout Stepper -->
+<div class="checkout-stepper my-4">
+    <div class="stepper-step active">
+        <span class="step-num">1</span>
+        <span>Giỏ Hàng</span>
+    </div>
+    <div class="stepper-divider"></div>
+    <div class="stepper-step">
+        <span class="step-num">2</span>
+        <span>Thông Tin Giao Hàng</span>
+    </div>
+    <div class="stepper-divider"></div>
+    <div class="stepper-step">
+        <span class="step-num">3</span>
+        <span>Hoàn Tất Đơn</span>
+    </div>
+</div>
+
+@if (order != null && order.LineItems != null && order.LineItems.Count > 0)
+{
+    <div class="row g-4 pb-5">
+        <!-- Cart Items Column -->
+        <div class="col-lg-8">
+            <div class="cart-items-wrapper">
+                <div class="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom">
+                    <h3 class="h5 mb-0 fw-bold">
+                        <i class="bi bi-bag-check-fill text-primary me-2"></i>
+                        Sản phẩm đã chọn (@order.LineItems.Count)
+                    </h3>
+                    <NavLink href="/" class="btn btn-sm btn-link text-decoration-none">
+                        <i class="bi bi-plus-lg me-1"></i>Thêm sản phẩm khác
+                    </NavLink>
+                </div>
+
+                @foreach (var item in order.LineItems)
+                {
+                    <LineItemComponent @key="item.ProductId"
+                                       LineItem="item" 
                                        OnDeleteProduct="HandleDeleteProduct" 
                                        OnUpdateQuantity="HandleUpdateQuantity"></LineItemComponent>
-
-                    @if (i < order.LineItems.Count - 1) {
-                        <li style="list-style:none">
-                            <hr />
-                        </li>
-                    }
                 }
-            </ul>
+            </div>
         </div>
-        <div class="col">
+
+        <!-- Order Summary Column -->
+        <div class="col-lg-4">
             <OrderSummaryComponent order="order"></OrderSummaryComponent>
         </div>
+    </div>
+}
+else
+{
+    <div class="empty-state-box my-5">
+        <div class="empty-state-icon">
+            <i class="bi bi-cart-x"></i>
+        </div>
+        <h3 class="empty-state-title">Giỏ hàng của bạn đang trống</h3>
+        <p class="empty-state-desc">
+            Bạn chưa thêm sản phẩm nào vào giỏ hàng. Hãy dạo một vòng để chọn những món mỹ phẩm yêu thích nhé!
+        </p>
+        <NavLink href="/" class="btn btn-primary rounded-pill px-4 py-2">
+            <i class="bi bi-arrow-left me-2"></i>
+            Tiếp Tục Mua Sắm
+        </NavLink>
     </div>
 }
 
@@ -40,9 +84,11 @@
 
     private void HandleDeleteProduct(Order order) {
         this.order = order;
+        StateHasChanged();
     }
 
     private void HandleUpdateQuantity(Order order) {
         this.order = order;
+        StateHasChanged();
     }
 }

@@ -3,12 +3,38 @@
 
 @inject IViewProcessedOrdersUseCase viewProcessedOrdersUseCase
 
-<h3>Processed Orders</h3>
-<br />
-<OrderListComponent Orders="orders"></OrderListComponent>
+<PageTitle>Đơn hàng đã xử lý - eShop Admin</PageTitle>
+
+<div class="py-3">
+    <!-- Admin Header -->
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+        <div>
+            <h2 class="h3 fw-bold mb-1">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                Đơn Hàng Đã Xử Lý
+            </h2>
+            <p class="text-muted small mb-0">Danh sách các đơn hàng đã được nhân viên hoàn tất xử lý</p>
+        </div>
+
+        <!-- Admin Tabs -->
+        <div class="btn-group bg-white p-1 rounded-pill border shadow-sm" role="group">
+            <NavLink href="/outstandingorders" class="btn btn-sm rounded-pill btn-light text-secondary px-3 fw-semibold">
+                <i class="bi bi-hourglass-split me-1"></i>
+                Chờ xử lý
+            </NavLink>
+            <NavLink href="/processedorders" class="btn btn-sm rounded-pill btn-success text-white px-3 fw-semibold">
+                <i class="bi bi-check2-circle me-1"></i>
+                Đã xử lý @(orders != null ? $"({orders.Count()})" : "")
+            </NavLink>
+        </div>
+    </div>
+
+    <!-- Orders Table -->
+    <OrderListComponent Orders="orders"></OrderListComponent>
+</div>
 
 @code {
-    private IEnumerable<Order> orders;
+    private IEnumerable<Order>? orders;
 
     protected override void OnInitialized()
     {
