@@ -1,4 +1,5 @@
 @page "/orderdetail/{id:int}"
+@attribute [Authorize]
 
 @inject NavigationManager navigationManager
 @inject IProcessOrderUseCase processOrderUseCase
@@ -42,10 +43,20 @@
 }
 
 @code {
+    private AuthenticationState authState;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authStateTask { get; set; }
+
     [Parameter]
     public int Id { get; set; }
 
     private Order order;
+
+    protected override async Task OnInitializedAsync()
+    {
+        authState = await authStateTask;
+    }
 
     protected override void OnParametersSet()
     {
@@ -58,8 +69,8 @@
 
     private void HandleProcessOrder()
     {
-        if (order != null){
-            processOrderUseCase.Execute(order.OrderId.Value, "admin");
+        if (order != null && authState != null){
+            processOrderUseCase.Execute(order.OrderId.Value, authState.User.Identity.Name);
             navigationManager.NavigateTo("/outstandingorders");
         }
     }

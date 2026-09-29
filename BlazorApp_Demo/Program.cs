@@ -48,6 +48,14 @@ namespace BlazorApp_Demo
 			builder.Services.AddScoped<IShoppingCart, eShop.ShoppingCart.LocalStorage.ShoppingCart>();
 			builder.Services.AddScoped<IShoppingCartStateStore, ShoppingCartStateStore>();
 
+            builder.Services.AddControllers();
+            builder.Services.AddAuthentication("eShop.CookieAuth")
+                .AddCookie("eShop.CookieAuth", config => {
+                    config.Cookie.Name = "eShop.CookieAuth";
+                    config.LoginPath = "/authenticate";
+                });
+            builder.Services.AddCascadingAuthenticationState();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -61,14 +69,20 @@ namespace BlazorApp_Demo
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
+
             app.UseAntiforgery();
+
+            app.MapControllers();
 
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
                 .AddAdditionalAssemblies(
                     typeof(eShop.Web.CustomerPortal.Pages.SearchProductComponent).Assembly,
                     typeof(eShop.Web.AdminPortal.Pages.OutstandingOrdersComponent).Assembly
-                );
+                )
+                .AllowAnonymous();
 
             app.Run();
         }
