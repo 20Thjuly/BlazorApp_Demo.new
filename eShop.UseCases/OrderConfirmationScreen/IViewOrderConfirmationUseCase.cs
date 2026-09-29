@@ -9,6 +9,6 @@ namespace eShop.UseCases.OrderConfirmationScreen
 {
     public interface IViewOrderConfirmationUseCase
     {
-        Order Execute(string uniqueId);
+        Order? Execute(string uniqueId);
     }
 }

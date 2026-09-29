@@ -10,6 +10,14 @@
             <p class="text-muted small">Đăng nhập để xem và xử lý các đơn hàng</p>
         </div>
 
+        @if (error == "invalid")
+        {
+            <div class="alert alert-danger py-2 px-3 small d-flex align-items-center gap-2 mb-3 rounded-3 border-0">
+                <i class="bi bi-exclamation-triangle-fill flex-shrink-0"></i>
+                <span>Tên đăng nhập hoặc mật khẩu không chính xác! Vui lòng thử lại.</span>
+            </div>
+        }
+
         <!-- Demo credentials hint for seamless UX -->
         <div class="alert alert-primary py-2 px-3 small d-flex align-items-center justify-content-between mb-4 rounded-3 border-0">
             <div>
@@ -67,6 +75,9 @@
 </div>
 
 @code {
+    [SupplyParameterFromQuery]
+    public string? error { get; set; }
+
     private LoginViewModel loginViewModel = new LoginViewModel();
 
     protected override void OnInitialized()

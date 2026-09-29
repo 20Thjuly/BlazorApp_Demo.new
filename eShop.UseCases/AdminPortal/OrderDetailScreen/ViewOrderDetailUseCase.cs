@@ -13,7 +13,7 @@ namespace eShop.UseCases.AdminPortal.OrderDetailScreen
             this.orderRepository = orderRepository;
         }
 
-        public Order Execute(int orderId)
+        public Order? Execute(int orderId)
         {
             return orderRepository.GetOrder(orderId);
         }

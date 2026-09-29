@@ -4,6 +4,6 @@ namespace eShop.UseCases.AdminPortal.OrderDetailScreen.Interfaces
 {
     public interface IViewOrderDetailUseCase
     {
-        Order Execute(int orderId);
+        Order? Execute(int orderId);
     }
 }

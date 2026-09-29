@@ -18,6 +18,8 @@ namespace eShop.UseCases.AdminPortal.OrderDetailScreen
         public bool Execute(int orderId, string adminUserName)
         {
             var order = orderRepository.GetOrder(orderId);
+            if (order == null) return false;
+
             order.AdminUser = adminUserName;
             order.DateProcessed = DateTime.Now;
 

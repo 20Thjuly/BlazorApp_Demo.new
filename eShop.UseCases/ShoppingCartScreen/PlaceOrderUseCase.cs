@@ -44,7 +44,7 @@ namespace eShop.UseCases.ShoppingCartScreen
                 return order.UniqueId;
             }
 
-            return null;
+            return string.Empty;
         }
     }
 }

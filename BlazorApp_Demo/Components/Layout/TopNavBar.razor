@@ -19,6 +19,43 @@
                     <span>Tất cả sản phẩm</span>
                 </NavLink>
 
+                <!-- Course Labs Dropdown -->
+                <div class="position-relative">
+                    <button type="button" 
+                            class="header-nav-link border-0 bg-transparent" 
+                            @onclick="ToggleLabMenu">
+                        <i class="bi bi-journal-code text-primary"></i>
+                        <span>Bài tập Lab</span>
+                        <i class="bi bi-chevron-down ms-1 small"></i>
+                    </button>
+
+                    @if (showLabMenu)
+                    {
+                        <div class="card border shadow-lg rounded-3 position-absolute top-100 start-0 mt-1 py-1" style="min-width: 220px; z-index: 1050; background: #ffffff;">
+                            <NavLink class="dropdown-item px-3 py-2 small d-flex align-items-center" href="/forms" @onclick="CloseLabMenu">
+                                <i class="bi bi-card-checklist text-primary me-2"></i>
+                                <span>Forms & Validation</span>
+                            </NavLink>
+                            <NavLink class="dropdown-item px-3 py-2 small d-flex align-items-center" href="/counter" @onclick="CloseLabMenu">
+                                <i class="bi bi-plus-slash-minus text-success me-2"></i>
+                                <span>Counter Component</span>
+                            </NavLink>
+                            <NavLink class="dropdown-item px-3 py-2 small d-flex align-items-center" href="/weather" @onclick="CloseLabMenu">
+                                <i class="bi bi-cloud-sun text-info me-2"></i>
+                                <span>Weather Forecast</span>
+                            </NavLink>
+                            <NavLink class="dropdown-item px-3 py-2 small d-flex align-items-center" href="/dynamic" @onclick="CloseLabMenu">
+                                <i class="bi bi-cpu text-warning me-2"></i>
+                                <span>Dynamic Content</span>
+                            </NavLink>
+                            <NavLink class="dropdown-item px-3 py-2 small d-flex align-items-center" href="/todo" @onclick="CloseLabMenu">
+                                <i class="bi bi-check2-square text-secondary me-2"></i>
+                                <span>Todo List</span>
+                            </NavLink>
+                        </div>
+                    }
+                </div>
+
                 <AuthorizeView>
                     <Authorized>
                         <NavLink class="header-nav-link" href="/outstandingorders">
@@ -60,3 +97,17 @@
         </div>
     </div>
 </header>
+
+@code {
+    private bool showLabMenu = false;
+
+    private void ToggleLabMenu()
+    {
+        showLabMenu = !showLabMenu;
+    }
+
+    private void CloseLabMenu()
+    {
+        showLabMenu = false;
+    }
+}

@@ -17,7 +17,7 @@ namespace eShop.UseCases.OrderConfirmationScreen
             this.orderRepository = orderRepository;
         }
 
-        public Order Execute(string uniqueId)
+        public Order? Execute(string uniqueId)
         {
             return orderRepository.GetOrderByUniqueId(uniqueId);
         }

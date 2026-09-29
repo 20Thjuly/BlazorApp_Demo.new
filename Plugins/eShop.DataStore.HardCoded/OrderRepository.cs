@@ -10,7 +10,7 @@ namespace eShop.DataStore.HardCoded
 {
     public class OrderRepository : IOrderRepository
     {
-        private Dictionary<int, Order> orders;
+        private readonly Dictionary<int, Order> orders;
 
         public OrderRepository()
         {
@@ -19,9 +19,13 @@ namespace eShop.DataStore.HardCoded
 
         public int CreateOrder(Order order)
         {
-            order.OrderId = orders.Count + 1;
-            order.UniqueId = Guid.NewGuid().ToString();
-            orders.Add(order.OrderId.Value, order);
+            int nextId = orders.Keys.Any() ? orders.Keys.Max() + 1 : 1;
+            order.OrderId = nextId;
+            if (string.IsNullOrWhiteSpace(order.UniqueId))
+            {
+                order.UniqueId = Guid.NewGuid().ToString();
+            }
+            orders[order.OrderId.Value] = order;
             return order.OrderId.Value;
         }
 
@@ -42,15 +46,23 @@ namespace eShop.DataStore.HardCoded
             return allOrders.Where(x => x.DateProcessed.HasValue);
         }
 
-        public Order GetOrder(int id)
+        public Order? GetOrder(int id)
         {
-            return orders[id];
+            if (orders.TryGetValue(id, out var ord))
+            {
+                return ord;
+            }
+            return null;
         }
 
-        public Order GetOrderByUniqueId(string uniqueId)
+        public Order? GetOrderByUniqueId(string uniqueId)
         {
+            if (string.IsNullOrWhiteSpace(uniqueId)) return null;
+
             foreach (var order in orders)
+            {
                 if (order.Value.UniqueId == uniqueId) return order.Value;
+            }
             return null;
         }
 
@@ -58,15 +70,15 @@ namespace eShop.DataStore.HardCoded
         {
             if (order == null || !order.OrderId.HasValue) return;
 
-            var ord = orders[order.OrderId.Value];
-            if (ord == null) return;
+            if (!orders.ContainsKey(order.OrderId.Value)) return;
 
             orders[order.OrderId.Value] = order;
         }
 
         public IEnumerable<OrderLineItem> GetLineItemsByOrderId(int orderId)
         {
-            throw new NotImplementedException();
+            var ord = GetOrder(orderId);
+            return ord?.LineItems ?? Enumerable.Empty<OrderLineItem>();
         }
     }
 }
