@@ -1,6 +1,9 @@
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">BlazorApp_Demo</a>
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+            <i class="bi bi-code-square text-info"></i>
+            <span>BlazorApp_Demo</span>
+        </a>
     </div>
 </div>
 
@@ -8,44 +11,55 @@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
+        <!-- Home / Lab Dashboard -->
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                <i class="bi bi-house-door-fill me-2" aria-hidden="true"></i> Trang Chủ Lab
+            </NavLink>
+        </div>
+
+        <!-- Special Highlight: eShop Store -->
+        <div class="nav-item px-3 my-2">
+            <NavLink class="nav-link active bg-primary text-white rounded-3 shadow-sm d-flex align-items-center justify-content-between" href="/eshop">
+                <span>
+                    <i class="bi bi-bag-heart-fill me-2" aria-hidden="true"></i> Cửa Hàng eShop
+                </span>
+                <span class="badge bg-warning text-dark rounded-pill" style="font-size: 0.65rem;">NEW</span>
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3 pt-2 pb-1 text-white-50 text-uppercase small" style="font-size: 0.75rem; letter-spacing: 0.05em;">
+            Bài Tập Thực Hành
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/forms">
+                <i class="bi bi-card-checklist me-2" aria-hidden="true"></i> Forms & Validation
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="forms">
-                <span class="bi bi-card-checklist" aria-hidden="true"></span> Forms and Validations
+            <NavLink class="nav-link" href="/counter">
+                <i class="bi bi-plus-slash-minus me-2" aria-hidden="true"></i> Counter Component
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link" href="/weather">
+                <i class="bi bi-cloud-sun me-2" aria-hidden="true"></i> Weather Forecast
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            <NavLink class="nav-link" href="/dynamic">
+                <i class="bi bi-cpu me-2" aria-hidden="true"></i> Dynamic Content
             </NavLink>
         </div>
+
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="dynamic">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Dynamic contents
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="products">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Search Product
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="todo">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Todo
+            <NavLink class="nav-link" href="/todo">
+                <i class="bi bi-check2-square me-2" aria-hidden="true"></i> Todo List
             </NavLink>
         </div>
     </nav>
 </div>
-

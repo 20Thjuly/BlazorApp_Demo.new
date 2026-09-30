@@ -1,7 +1,162 @@
+@page "/"
 @page "/home"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Trang Chủ - Lập Trình Web Phần 1</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="py-2">
+    <!-- Lab Hero Header -->
+    <div class="card border-0 rounded-4 p-4 mb-4 text-white shadow-sm" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%);">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div>
+                <span class="badge bg-primary px-3 py-2 rounded-pill text-uppercase mb-2" style="font-size: 0.75rem; letter-spacing: 0.08em;">
+                    <i class="bi bi-mortarboard-fill me-1"></i> Môn Học: Lập Trình Web (Part 1)
+                </span>
+                <h1 class="h2 fw-bold text-white mb-2">Hệ Thống Bài Tập & Demos Blazor</h1>
+                <p class="text-white-50 mb-0" style="max-width: 600px;">
+                    Tổng hợp các bài thực hành Blazor Server (Component, Data Binding, Cascading Value, Forms & Validation) và Dự án Cửa Hàng <strong>eShop</strong>.
+                </p>
+            </div>
+            <div>
+                <a href="/eshop" class="btn btn-warning btn-lg rounded-pill px-4 fw-bold shadow d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-bag-heart-fill"></i>
+                    <span>Mở Cửa Hàng eShop</span>
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 
-Welcome to your new app.
+    <!-- Quick Cards Grid -->
+    <h4 class="fw-bold mb-3 d-flex align-items-center gap-2">
+        <i class="bi bi-grid-3x3-gap-fill text-primary"></i>
+        <span>Danh Mục Bài Tập Thực Hành</span>
+    </h4>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5">
+        <!-- eShop Card -->
+        <div class="col">
+            <div class="card h-100 border rounded-4 p-3 shadow-sm hover-shadow bg-white">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="rounded-3 bg-primary bg-opacity-10 p-2 text-primary fs-4">
+                        <i class="bi bi-shop"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Cửa Hàng eShop</h5>
+                        <small class="text-muted">Dự án lớn</small>
+                    </div>
+                </div>
+                <p class="text-secondary small flex-grow-1">
+                    Cửa hàng mỹ phẩm đầy đủ chức năng: Catalog sản phẩm, giỏ hàng LocalStorage, thanh toán, quản trị đơn hàng.
+                </p>
+                <a href="/eshop" class="btn btn-outline-primary btn-sm rounded-pill fw-bold">
+                    Khám phá eShop &rarr;
+                </a>
+            </div>
+        </div>
+
+        <!-- Forms & Validation -->
+        <div class="col">
+            <div class="card h-100 border rounded-4 p-3 shadow-sm bg-white">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="rounded-3 bg-success bg-opacity-10 p-2 text-success fs-4">
+                        <i class="bi bi-card-checklist"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Forms & Validation</h5>
+                        <small class="text-muted">Bài tập Form</small>
+                    </div>
+                </div>
+                <p class="text-secondary small flex-grow-1">
+                    Demo EditForm, DataAnnotationsValidator, ValidationSummary và kiểm tra tính hợp lệ dữ liệu.
+                </p>
+                <a href="/forms" class="btn btn-outline-secondary btn-sm rounded-pill">
+                    Xem bài tập &rarr;
+                </a>
+            </div>
+        </div>
+
+        <!-- Counter -->
+        <div class="col">
+            <div class="card h-100 border rounded-4 p-3 shadow-sm bg-white">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="rounded-3 bg-info bg-opacity-10 p-2 text-info fs-4">
+                        <i class="bi bi-plus-slash-minus"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Counter & Cascading</h5>
+                        <small class="text-muted">Bài tập State</small>
+                    </div>
+                </div>
+                <p class="text-secondary small flex-grow-1">
+                    Demo CascadingValue và CascadingParameter truyền dữ liệu đa cấp xuống Component1, Component2.
+                </p>
+                <a href="/counter" class="btn btn-outline-secondary btn-sm rounded-pill">
+                    Xem bài tập &rarr;
+                </a>
+            </div>
+        </div>
+
+        <!-- Weather -->
+        <div class="col">
+            <div class="card h-100 border rounded-4 p-3 shadow-sm bg-white">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="rounded-3 bg-warning bg-opacity-10 p-2 text-warning fs-4">
+                        <i class="bi bi-cloud-sun"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Weather Forecast</h5>
+                        <small class="text-muted">Stream Rendering</small>
+                    </div>
+                </div>
+                <p class="text-secondary small flex-grow-1">
+                    Demo tải dữ liệu bất đồng bộ với StreamRendering và hiển thị bảng dữ liệu thời tiết.
+                </p>
+                <a href="/weather" class="btn btn-outline-secondary btn-sm rounded-pill">
+                    Xem bài tập &rarr;
+                </a>
+            </div>
+        </div>
+
+        <!-- Dynamic Content -->
+        <div class="col">
+            <div class="card h-100 border rounded-4 p-3 shadow-sm bg-white">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="rounded-3 bg-danger bg-opacity-10 p-2 text-danger fs-4">
+                        <i class="bi bi-cpu"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Dynamic Content</h5>
+                        <small class="text-muted">Nội dung động</small>
+                    </div>
+                </div>
+                <p class="text-secondary small flex-grow-1">
+                    Demo phân biệt cơ chế khởi tạo nội dung động giữa Blazor Server và Blazor WebAssembly.
+                </p>
+                <a href="/dynamic" class="btn btn-outline-secondary btn-sm rounded-pill">
+                    Xem bài tập &rarr;
+                </a>
+            </div>
+        </div>
+
+        <!-- Todo -->
+        <div class="col">
+            <div class="card h-100 border rounded-4 p-3 shadow-sm bg-white">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="rounded-3 bg-secondary bg-opacity-10 p-2 text-secondary fs-4">
+                        <i class="bi bi-check2-square"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Todo List</h5>
+                        <small class="text-muted">Ứng dụng Todo</small>
+                    </div>
+                </div>
+                <p class="text-secondary small flex-grow-1">
+                    Quản lý danh sách công việc cần làm, tiến độ hoàn thành và trạng thái checkbox.
+                </p>
+                <a href="/todo" class="btn btn-outline-secondary btn-sm rounded-pill">
+                    Xem bài tập &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

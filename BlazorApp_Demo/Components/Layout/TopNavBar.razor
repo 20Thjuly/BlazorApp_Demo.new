@@ -2,7 +2,7 @@
     <div class="eshop-container">
         <div class="eshop-header-inner">
             <!-- Brand Logo -->
-            <a class="brand-link" href="/">
+            <a class="brand-link" href="/eshop">
                 <div class="brand-icon-box">
                     <i class="bi bi-gem"></i>
                 </div>
@@ -14,7 +14,7 @@
 
             <!-- Navigation Links -->
             <nav class="d-none d-md-flex align-items-center gap-2">
-                <NavLink class="header-nav-link" href="/" Match="NavLinkMatch.All">
+                <NavLink class="header-nav-link" href="/eshop" Match="NavLinkMatch.All">
                     <i class="bi bi-grid-fill"></i>
                     <span>Tất cả sản phẩm</span>
                 </NavLink>
@@ -72,6 +72,11 @@
 
             <!-- Right Actions -->
             <div class="header-actions">
+                <NavLink class="btn btn-outline-secondary btn-sm rounded-pill px-3 d-inline-flex align-items-center gap-1" href="/" title="Quay lại bài tập Lab">
+                    <i class="bi bi-mortarboard-fill text-primary"></i>
+                    <span class="d-none d-sm-inline">Về Bài Lab</span>
+                </NavLink>
+
                 <AuthorizeView>
                     <Authorized>
                         <div class="user-status-pill d-none d-sm-inline-flex">
