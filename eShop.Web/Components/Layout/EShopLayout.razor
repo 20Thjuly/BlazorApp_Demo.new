@@ -1,0 +1,105 @@
+@inherits LayoutComponentBase
+
+<div class="page eshop-layout-page">
+    <!-- Top Announcement Bar -->
+    <div class="announcement-bar">
+        <div class="eshop-container">
+            <span>
+                <i class="bi bi-stars"></i>
+                Ưu Đãi Đặc Biệt: Miễn phí vận chuyển toàn quốc cho mọi đơn hàng | Cam kết 100% chính hãng
+                <i class="bi bi-shield-check"></i>
+            </span>
+        </div>
+    </div>
+
+    <main>
+        <!-- Header & Nav -->
+        <TopNavBar></TopNavBar>
+
+        <!-- Main Body Content -->
+        <div class="content-wrapper">
+            <div class="eshop-container">
+                @Body
+            </div>
+        </div>
+
+        <!-- Modern eShop Footer -->
+        <footer class="eshop-footer">
+            <div class="eshop-container">
+                <div class="footer-grid">
+                    <div>
+                        <div class="brand-link mb-3">
+                            <div class="brand-icon-box">
+                                <i class="bi bi-gem"></i>
+                            </div>
+                            <div class="brand-text-wrap">
+                                <span class="brand-title">eShop</span>
+                                <span class="brand-sub">Beauty & Cosmetics</span>
+                            </div>
+                        </div>
+                        <p class="text-muted" style="font-size: 0.9rem; max-width: 320px;">
+                            Hệ thống bán lẻ mỹ phẩm và sản phẩm chăm sóc sắc đẹp chính hãng hàng đầu. Đem lại sự tự tin và rạng rỡ mỗi ngày cho bạn.
+                        </p>
+                        <div class="d-flex gap-3 text-secondary" style="font-size: 1.2rem;">
+                            <a href="#" class="text-secondary"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="text-secondary"><i class="bi bi-instagram"></i></a>
+                            <a href="#" class="text-secondary"><i class="bi bi-tiktok"></i></a>
+                            <a href="#" class="text-secondary"><i class="bi bi-youtube"></i></a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h6 class="footer-heading">Khám phá</h6>
+                        <ul class="footer-links">
+                            <li><NavLink href="/">Tất cả sản phẩm</NavLink></li>
+                            <li><NavLink href="/cart">Giỏ hàng</NavLink></li>
+                            <li><a href="#deals">Khuyến mãi hot</a></li>
+                            <li><a href="#bestsellers">Bán chạy nhất</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h6 class="footer-heading">Chính sách</h6>
+                        <ul class="footer-links">
+                            <li><a href="#">Chính sách giao hàng</a></li>
+                            <li><a href="#">Đổi trả 30 ngày</a></li>
+                            <li><a href="#">Bảo mật thanh toán</a></li>
+                            <li><a href="#">Điều khoản sử dụng</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h6 class="footer-heading">Hỗ trợ khách hàng</h6>
+                        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">
+                            <i class="bi bi-telephone-fill text-primary me-2"></i>
+                            <strong>Hotline: 1900 6868</strong>
+                        </p>
+                        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">
+                            <i class="bi bi-envelope-fill text-primary me-2"></i>
+                            support@eshopbeauty.com
+                        </p>
+                        <p style="font-size: 0.85rem; color: #94a3b8;">
+                            Giờ làm việc: 8:00 - 22:00 (Thứ 2 - Chủ Nhật)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <div>
+                        &copy; @DateTime.Now.Year eShop. Tất cả quyền được bảo lưu.
+                    </div>
+                    <div class="d-flex gap-3 align-items-center">
+                        <span class="badge bg-light text-secondary border"><i class="bi bi-shield-lock-fill text-success me-1"></i>SSL Secured</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    Đã xảy ra sự cố không mong muốn.
+    <a href="" class="reload">Tải lại trang</a>
+    <a class="dismiss">✕</a>
+</div>

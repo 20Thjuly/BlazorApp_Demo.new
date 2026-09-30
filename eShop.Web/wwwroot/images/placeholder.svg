@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300" fill="none">
+  <rect width="300" height="300" fill="#F1F5F9"/>
+  <circle cx="150" cy="130" r="50" fill="#E2E8F0"/>
+  <path d="M135 120C135 111.716 141.716 105 150 105C158.284 105 165 111.716 165 120V125H135V120Z" fill="#94A3B8"/>
+  <rect x="130" y="125" width="40" height="35" rx="4" fill="#64748B"/>
+  <path d="M142 135H158" stroke="#F8FAFC" stroke-width="2" stroke-linecap="round"/>
+  <text x="150" y="210" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#64748B" text-anchor="middle">eShop Beauty</text>
+  <text x="150" y="230" font-family="system-ui, sans-serif" font-size="12" fill="#94A3B8" text-anchor="middle">Product Image</text>
+</svg>

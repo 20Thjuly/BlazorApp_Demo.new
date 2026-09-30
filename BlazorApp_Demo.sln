@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.ShoppingCart.LocalSto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.StateStore.DI", "Plugins\eShop.StateStore.DI\eShop.StateStore.DI.csproj", "{98F5FCF4-23D1-4C17-A7C9-36DB2CECAA0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.Web", "eShop.Web\eShop.Web.csproj", "{24CD71EB-5F5F-47AF-9CD0-FBB5AC8922B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{98F5FCF4-23D1-4C17-A7C9-36DB2CECAA0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98F5FCF4-23D1-4C17-A7C9-36DB2CECAA0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98F5FCF4-23D1-4C17-A7C9-36DB2CECAA0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24CD71EB-5F5F-47AF-9CD0-FBB5AC8922B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24CD71EB-5F5F-47AF-9CD0-FBB5AC8922B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24CD71EB-5F5F-47AF-9CD0-FBB5AC8922B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24CD71EB-5F5F-47AF-9CD0-FBB5AC8922B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
