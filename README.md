@@ -1,5 +1,6 @@
 # 🌟 BlazorApp_Demo & eShop Beauty Store
-
+Họ tên: Đinh Hữu Quang
+Mã sinh viên: 23K4080042
 > **Dự án Môn học: Lập Trình Web (Phần 1 - Blazor Web App với .NET 8)**  
 > Ứng dụng bao gồm **Hệ thống Bài tập Lab thực hành** và **Dự án Cửa hàng Mỹ phẩm eShop** được xây dựng theo kiến trúc đa tầng (Clean Architecture / Plugin Pattern).
 
